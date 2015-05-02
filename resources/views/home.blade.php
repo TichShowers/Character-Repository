@@ -1,17 +1,19 @@
-@extends('app')
+@extends('shared/_layout')
+
+@section('title')
+   Home
+@endsection
 
 @section('content')
-<div class="container">
-	<div class="row">
-		<div class="col-md-10 col-md-offset-1">
-			<div class="panel panel-default">
-				<div class="panel-heading">Home</div>
+    <h1>Home</h1>
 
-				<div class="panel-body">
-					You are logged in!
-				</div>
-			</div>
-		</div>
-	</div>
-</div>
+    @if(!$categories->count())
+        <p>There are no categories.</p>
+    @else
+        <ul>
+            @foreach($categories as $category)
+                <li>{{ $category->name }}</li>
+            @endforeach
+        </ul>
+    @endif
 @endsection

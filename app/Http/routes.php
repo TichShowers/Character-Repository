@@ -11,15 +11,26 @@
 |
 */
 
-Route::get('/', 'WelcomeController@index');
-
-Route::get('home', 'HomeController@index');
-
-Route::controllers([
-	'auth' => 'Auth\AuthController',
-	'password' => 'Auth\PasswordController',
-]);
-
 Route::get('degeso', function() {
     return "Degeso";
 });
+
+//Route::controllers([
+//    'auth' => 'Auth\AuthController',
+//    'password' => 'Auth\PasswordController',
+//]);
+
+Route::get('login', 'AuthController@login');
+Route::get('login', 'AuthController@authenticate');
+Route::post('logout', 'AuthController@logout');
+
+Route::group(['prefix' => 'admin'], function(){
+    Route::resource('users', 'UsersController');
+});
+
+Route::get('/', ['as' => 'Home', 'uses' => 'CharacterController@index']);
+Route::get('{category}/{character}', ['as' => 'Character', 'uses' => 'CharacterController@show']);
+Route::get('{category}/{character}/gallery', ['as' => 'Gallery', 'uses' => 'CharacterController@gallery']);
+
+
+

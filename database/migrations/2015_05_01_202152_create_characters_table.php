@@ -20,7 +20,7 @@ class CreateCharactersTable extends Migration {
             $table->text('description');
             $table->string('image');
 			$table->timestamps();
-            $table->integer('category_id');
+            $table->integer('category_id')->unsigned();
 
             $table->foreign('category_id')
                   ->references('id')
