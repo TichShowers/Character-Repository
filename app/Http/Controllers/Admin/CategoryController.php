@@ -1,5 +1,6 @@
 <?php namespace App\Http\Controllers\Admin;
 
+use App\Category;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
 
@@ -19,7 +20,9 @@ class CategoryController extends Controller {
 	 */
 	public function index()
 	{
-		return view('admin.category.index');
+        $categories = Category::orderBy('weight', 'ASC')->get();
+
+		return view('admin.category.index')->with('categories', $categories);
 	}
 
 	/**
