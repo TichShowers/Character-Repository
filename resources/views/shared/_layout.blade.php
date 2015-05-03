@@ -8,7 +8,12 @@
     <meta charset="UTF-8">
     <title>@yield('title') | tich.tv</title>
 
-
+    <style>
+        img {
+            width: 100px;
+            height: 100px;
+        }
+    </style>
 </head>
 <body>
 <div class="container">

@@ -21,11 +21,11 @@ Route::get('degeso', function() {
 //]);
 
 Route::get('login', 'AuthController@login');
-Route::get('login', 'AuthController@authenticate');
+Route::post('login', 'AuthController@authenticate');
 Route::post('logout', 'AuthController@logout');
 
 Route::group(['prefix' => 'admin'], function(){
-    Route::resource('users', 'UsersController');
+    Route::resource('users', 'Admin\UserController');
 });
 
 Route::get('/', ['as' => 'Home', 'uses' => 'CharacterController@index']);
