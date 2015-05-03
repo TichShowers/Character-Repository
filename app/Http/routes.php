@@ -15,18 +15,23 @@ Route::get('degeso', function() {
     return "Degeso";
 });
 
-//Route::controllers([
-//    'auth' => 'Auth\AuthController',
-//    'password' => 'Auth\PasswordController',
-//]);
+function createRouteGroup($groupname, $controllername)
+{
+    Route::get($groupname.'/', ['as' => 'admin.'.$groupname.'.index', 'uses' => 'Admin\\'.$controllername.'@index']);
+    Route::get($groupname.'/new', ['as' => 'admin.'.$groupname.'.create', 'uses' => 'Admin\\'.$controllername.'@create']);
+    Route::post($groupname.'/new', ['as' => 'admin.'.$groupname.'.store', 'uses' => 'Admin\\'.$controllername.'@store']);
+    Route::get($groupname.'/edit/{id}', ['as' => 'admin.'.$groupname.'.edit', 'uses' => 'Admin\\'.$controllername.'@edit']);
+    Route::post($groupname.'/edit/{id}', ['as' => 'admin.'.$groupname.'.update', 'uses' => 'Admin\\'.$controllername.'@update']);
+    Route::post($groupname.'/delete/{id}', ['as' => 'admin.'.$groupname.'.delete', 'uses' => 'Admin\\'.$controllername.'@destroy']);
+}
 
 Route::get('login', 'AuthController@login');
 Route::post('login', 'AuthController@authenticate');
 Route::post('logout', 'AuthController@logout');
 
 Route::group(['prefix' => 'admin'], function(){
-    Route::resource('users', 'Admin\UserController');
-    Route::resource('category', 'Admin\CategoryController');
+    createRouteGroup('category', 'CategoryController');
+    createRouteGroup('users', 'UserController');
 });
 
 Route::get('/', ['as' => 'Home', 'uses' => 'CharacterController@index']);

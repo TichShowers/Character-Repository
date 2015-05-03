@@ -16,13 +16,20 @@ class Category extends Model {
      *
      * @var array
      */
-    protected $fillable = ['name', 'slug'];
+    protected $fillable = ['name', 'slug', 'weight'];
+
+    protected $casts = [
+        'weight' => 'integer',
+    ];
 
 	public function characters()
     {
         return $this->hasMany('App\Character');
     }
 
-    
+    public function scopeWeighted($query)
+    {
+        $query->orderBy('weight', 'ASC');
+    }
 
 }

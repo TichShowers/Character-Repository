@@ -1,7 +1,7 @@
 <?php namespace App\Http\Controllers\Admin;
 
 use App\Category;
-use App\Http\Requests;
+use App\Http\Requests\CategoryRequest;
 use App\Http\Controllers\Controller;
 
 use Illuminate\Http\Request;
@@ -20,7 +20,7 @@ class CategoryController extends Controller {
 	 */
 	public function index()
 	{
-        $categories = Category::orderBy('weight', 'ASC')->get();
+        $categories = Category::weighted()->get();
 
 		return view('admin.category.index')->with('categories', $categories);
 	}
@@ -41,24 +41,13 @@ class CategoryController extends Controller {
      * @param Request $request
      * @return Response
      */
-	public function store(Request $request)
+	public function store(CategoryRequest $request)
 	{
         $input = $request->only('name', 'slug', 'weight');
 
         Category::create($input);
 
-        return $input;
-	}
-
-	/**
-	 * Display the specified resource.
-	 *
-	 * @param  int  $id
-	 * @return Response
-	 */
-	public function show($id)
-	{
-		//
+        return redirect()->route('admin.category.index');
 	}
 
 	/**
@@ -91,7 +80,9 @@ class CategoryController extends Controller {
 	 */
 	public function destroy($id)
 	{
-		//
+        $categories = Category::findOrFail($id);
+
+
 	}
 
 }

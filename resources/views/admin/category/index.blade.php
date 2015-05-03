@@ -14,7 +14,15 @@
         <ul class="list-group">
          @foreach($categories as $category)
              <li class="list-group-item">
-                 <a href="{{ route('admin.category.edit', ['category' => $category->id]) }}">{{ $category->name }}</a>
+                 {{ $category->name }}
+                 <span class="pull-right btn-group btn-group-xs">
+                     <a href="{{ route('admin.category.edit', ['category' => $category->id]) }}" class="btn btn-primary">
+                         <i class="glyphicon glyphicon-pencil"></i> Edit
+                     </a>
+                     <a href="{{ route('admin.category.delete', ['category' => $category->id]) }}" class="btn btn-danger">
+                         <i class="glyphicon glyphicon-trash"></i> Delete
+                     </a>
+                 </span>
              </li>
          @endforeach
         </ul>

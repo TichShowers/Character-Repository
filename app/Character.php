@@ -6,7 +6,11 @@ class Character extends Model {
 
     protected $table = 'characters';
 
-    protected $fillable = ['name', 'slug', 'description', 'image'];
+    protected $fillable = ['name', 'slug', 'description', 'image', 'weight'];
+
+    protected $casts = [
+        'weight' => 'integer',
+    ];
 
 	public function category()
     {
