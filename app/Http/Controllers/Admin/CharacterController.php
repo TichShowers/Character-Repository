@@ -5,7 +5,7 @@ use App\Http\Controllers\Controller;
 
 use Illuminate\Http\Request;
 
-class UserController extends Controller {
+class CharacterController extends Controller {
 
     public function __construct()
     {
@@ -19,7 +19,7 @@ class UserController extends Controller {
 	 */
 	public function index()
 	{
-		return 'hi';
+		//
 	}
 
 	/**

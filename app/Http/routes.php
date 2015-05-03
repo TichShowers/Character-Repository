@@ -26,6 +26,7 @@ Route::post('logout', 'AuthController@logout');
 
 Route::group(['prefix' => 'admin'], function(){
     Route::resource('users', 'Admin\UserController');
+    Route::resource('category', 'Admin\CategoryController');
 });
 
 Route::get('/', ['as' => 'Home', 'uses' => 'CharacterController@index']);
