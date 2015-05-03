@@ -32,17 +32,22 @@ class CategoryController extends Controller {
 	 */
 	public function create()
 	{
-		//
+		return view('admin.category.create');
 	}
 
-	/**
-	 * Store a newly created resource in storage.
-	 *
-	 * @return Response
-	 */
-	public function store()
+    /**
+     * Store a newly created resource in storage.
+     *
+     * @param Request $request
+     * @return Response
+     */
+	public function store(Request $request)
 	{
-		//
+        $input = $request->only('name', 'slug', 'weight');
+
+        Category::create($input);
+
+        return $input;
 	}
 
 	/**

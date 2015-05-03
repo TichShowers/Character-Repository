@@ -8,12 +8,14 @@
 
     <h1>Categories</h1>
 
-    <a href=" {{ route('admin.category.edit') }}">Create new Category</a>
+    <a href="{{ route('admin.category.create') }}" class="btn btn-primary btn-lg">Create new Category</a>
 
     @if($categories->count())
-        <ul>
+        <ul class="list-group">
          @foreach($categories as $category)
-             <li><a href="{{ route('admin.category.edit', ['category' => $category->id]) }}">{{ $category->name }}</a></li>
+             <li class="list-group-item">
+                 <a href="{{ route('admin.category.edit', ['category' => $category->id]) }}">{{ $category->name }}</a>
+             </li>
          @endforeach
         </ul>
     @else

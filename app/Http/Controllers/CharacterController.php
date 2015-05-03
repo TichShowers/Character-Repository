@@ -10,7 +10,7 @@ class CharacterController extends Controller {
 
 	public function index()
     {
-        $categories  = Category::all();
+        $categories  = Category::orderBy('weight', 'ASC')->get();
 
         return view('home', compact('categories'));
     }
