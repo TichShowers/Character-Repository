@@ -15,15 +15,15 @@ Route::get('degeso', function() {
     return "Degeso";
 });
 
-function createRouteGroup($groupname, $controllername)
-{
-    Route::get($groupname.'/', ['as' => 'admin.'.$groupname.'.index', 'uses' => 'Admin\\'.$controllername.'@index']);
-    Route::get($groupname.'/new', ['as' => 'admin.'.$groupname.'.create', 'uses' => 'Admin\\'.$controllername.'@create']);
-    Route::post($groupname.'/new', ['as' => 'admin.'.$groupname.'.store', 'uses' => 'Admin\\'.$controllername.'@store']);
-    Route::get($groupname.'/edit/{id}', ['as' => 'admin.'.$groupname.'.edit', 'uses' => 'Admin\\'.$controllername.'@edit']);
-    Route::post($groupname.'/edit/{id}', ['as' => 'admin.'.$groupname.'.update', 'uses' => 'Admin\\'.$controllername.'@update']);
-    Route::post($groupname.'/delete/{id}', ['as' => 'admin.'.$groupname.'.delete', 'uses' => 'Admin\\'.$controllername.'@destroy']);
-}
+    function createRouteGroup($groupname, $controllername)
+    {
+        Route::get($groupname.'/', ['as' => 'admin.'.$groupname.'.index', 'uses' => 'Admin\\'.$controllername.'@index']);
+        Route::get($groupname.'/new', ['as' => 'admin.'.$groupname.'.create', 'uses' => 'Admin\\'.$controllername.'@create']);
+        Route::post($groupname.'/new', ['as' => 'admin.'.$groupname.'.store', 'uses' => 'Admin\\'.$controllername.'@store']);
+        Route::get($groupname.'/edit/{id}', ['as' => 'admin.'.$groupname.'.edit', 'uses' => 'Admin\\'.$controllername.'@edit']);
+        Route::post($groupname.'/edit/{id}', ['as' => 'admin.'.$groupname.'.update', 'uses' => 'Admin\\'.$controllername.'@update']);
+        Route::post($groupname.'/delete/{id}', ['as' => 'admin.'.$groupname.'.delete', 'uses' => 'Admin\\'.$controllername.'@destroy']);
+    }
 
 Route::get('login', 'AuthController@login');
 Route::post('login', 'AuthController@authenticate');

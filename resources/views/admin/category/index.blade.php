@@ -19,7 +19,7 @@
                      <a href="{{ route('admin.category.edit', ['category' => $category->id]) }}" class="btn btn-primary">
                          <i class="glyphicon glyphicon-pencil"></i> Edit
                      </a>
-                     <a href="{{ route('admin.category.delete', ['category' => $category->id]) }}" class="btn btn-danger">
+                     <a href="{{ route('admin.category.delete', ['category' => $category->id]) }}" class="btn btn-danger" data-post="true">
                          <i class="glyphicon glyphicon-trash"></i> Delete
                      </a>
                  </span>
@@ -29,4 +29,12 @@
     @else
         <p>No Categories</p>
     @endif
+
+    <form id="anti-forgery-token">
+        {!! Form::token() !!}
+    </form>
+@endsection
+
+@section("scripts")
+    <script type="text/javascript" src="/js/formsubmitter.js"></script>
 @endsection

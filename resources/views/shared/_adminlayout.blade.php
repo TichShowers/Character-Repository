@@ -15,6 +15,7 @@
     @yield('content')
 </div>
 
+<script type="text/javascript" src="https://code.jquery.com/jquery.js"></script>
 @yield('scripts')
 </body>
 </html>
