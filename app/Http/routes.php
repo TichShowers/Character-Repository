@@ -33,6 +33,7 @@ Route::group(['prefix' => 'admin'], function(){
     createRouteGroup('category', 'CategoryController');
     createRouteGroup('user', 'UserController');
     createRouteGroup('social-link', 'SocialLinkController');
+    createRouteGroup('character', 'CharacterController');
 });
 
 Route::get('/', ['as' => 'Home', 'uses' => 'CharacterController@index']);

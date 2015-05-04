@@ -1,14 +1,14 @@
 @extends('shared/_adminlayout')
 
 @section('title')
-    New Category
+    New Character
 @endsection
 
 @section('content')
 
-    <h1>Create Category</h1>
+    <h1>Create Character</h1>
 
-    {!! Form::open(['route' => 'admin.category.store']) !!}
-    @include('admin/category/_form', ['submit' => 'Add Category'])
+    {!! Form::open(['route' => 'admin.character.store']) !!}
+    @include('admin/character/_form', ['submit' => 'Add Character'])
     {!! Form::close() !!}
 @endsection

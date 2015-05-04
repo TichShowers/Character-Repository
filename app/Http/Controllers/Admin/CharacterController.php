@@ -1,8 +1,10 @@
 <?php namespace App\Http\Controllers\Admin;
 
+use App\Character;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
 
+use App\Http\Requests\CharacterRequest;
 use Illuminate\Http\Request;
 
 class CharacterController extends Controller {
@@ -12,78 +14,48 @@ class CharacterController extends Controller {
         $this->middleware('auth');
     }
 
-	/**
-	 * Display a listing of the resource.
-	 *
-	 * @return Response
-	 */
-	public function index()
-	{
-		//
-	}
+    public function index()
+    {
+        $characters = Character::all();
 
-	/**
-	 * Show the form for creating a new resource.
-	 *
-	 * @return Response
-	 */
-	public function create()
-	{
-		//
-	}
+        return view('admin.character.index')->with('characters', $characters);
+    }
 
-	/**
-	 * Store a newly created resource in storage.
-	 *
-	 * @return Response
-	 */
-	public function store()
-	{
-		//
-	}
+    public function create()
+    {
+        return view('admin.character.create');
+    }
 
-	/**
-	 * Display the specified resource.
-	 *
-	 * @param  int  $id
-	 * @return Response
-	 */
-	public function show($id)
-	{
-		//
-	}
+    public function store(CharacterRequest $request)
+    {
+        Character::create($request->all());
 
-	/**
-	 * Show the form for editing the specified resource.
-	 *
-	 * @param  int  $id
-	 * @return Response
-	 */
-	public function edit($id)
-	{
-		//
-	}
+        return redirect()->route('admin.character.index');
+    }
 
-	/**
-	 * Update the specified resource in storage.
-	 *
-	 * @param  int  $id
-	 * @return Response
-	 */
-	public function update($id)
-	{
-		//
-	}
+    public function edit($id)
+    {
+        $character = Character::findOrFail($id);
 
-	/**
-	 * Remove the specified resource from storage.
-	 *
-	 * @param  int  $id
-	 * @return Response
-	 */
-	public function destroy($id)
-	{
-		//
-	}
+        return view('admin.character.edit')->with('character', $character);
+    }
+
+    public function update($id, CharacterRequest $request)
+    {
+        $character = Character::findOrFail($id);
+
+        $character->update($request->all());
+
+        return redirect()->route('admin.character.index');
+    }
+
+    public function destroy($id)
+    {
+        $character = Character::findOrFail($id);
+
+        $character->delete();
+
+        return redirect()->route('admin.character.index');
+    }
 
 }

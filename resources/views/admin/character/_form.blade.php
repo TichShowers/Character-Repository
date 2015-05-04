@@ -11,6 +11,11 @@
 </div>
 
 <div class="form-group">
+    {!! Form::label('description', 'Description: ') !!}
+    {!! Form::textarea('description', null, ['class' => 'form-control']) !!}
+</div>
+
+<div class="form-group">
     {!! Form::label('weight', 'Weight: ') !!}
     {!! Form::text('weight', null, ['class' => 'form-control']) !!}
 </div>
