@@ -3,6 +3,8 @@
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
 
+use App\Http\Requests\UserRequest;
+use App\User;
 use Illuminate\Http\Request;
 
 class UserController extends Controller {
@@ -12,78 +14,48 @@ class UserController extends Controller {
         $this->middleware('auth');
     }
 
-	/**
-	 * Display a listing of the resource.
-	 *
-	 * @return Response
-	 */
-	public function index()
-	{
-		return 'hi';
-	}
+    public function index()
+    {
+        $users = User::all();
 
-	/**
-	 * Show the form for creating a new resource.
-	 *
-	 * @return Response
-	 */
-	public function create()
-	{
-		//
-	}
+        return view('admin.user.index')->with('users', $users);
+    }
 
-	/**
-	 * Store a newly created resource in storage.
-	 *
-	 * @return Response
-	 */
-	public function store()
-	{
-		//
-	}
+    public function create()
+    {
+        return view('admin.user.create');
+    }
 
-	/**
-	 * Display the specified resource.
-	 *
-	 * @param  int  $id
-	 * @return Response
-	 */
-	public function show($id)
-	{
-		//
-	}
+    public function store(UserRequest $request)
+    {
+        User::create($request->all());
 
-	/**
-	 * Show the form for editing the specified resource.
-	 *
-	 * @param  int  $id
-	 * @return Response
-	 */
-	public function edit($id)
-	{
-		//
-	}
+        return redirect()->route('admin.users.index');
+    }
 
-	/**
-	 * Update the specified resource in storage.
-	 *
-	 * @param  int  $id
-	 * @return Response
-	 */
-	public function update($id)
-	{
-		//
-	}
+    public function edit($id)
+    {
+        $user = User::findOrFail($id);
 
-	/**
-	 * Remove the specified resource from storage.
-	 *
-	 * @param  int  $id
-	 * @return Response
-	 */
-	public function destroy($id)
-	{
-		//
-	}
+        return view('admin.user.edit')->with('user', $user);
+    }
+
+    public function update($id, UserRequest $request)
+    {
+        $user = user::findOrFail($id);
+
+        $user->update($request->all());
+
+        return redirect()->route('admin.users.index');
+    }
+
+    public function destroy($id)
+    {
+        $user = User::findOrFail($id);
+
+        $user->delete();
+
+        return redirect()->route('admin.users.index');
+    }
 
 }

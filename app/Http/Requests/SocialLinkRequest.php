@@ -3,7 +3,7 @@
 use App\Http\Requests\Request;
 use Illuminate\Auth\Guard;
 
-class CategoryRequest extends Request {
+class SocialLinkRequest extends Request {
 
     protected $auth;
 
@@ -30,9 +30,9 @@ class CategoryRequest extends Request {
 	public function rules()
 	{
 		return [
-			'name' => 'required',
-            'slug' => 'required',
-            'weight' => 'required|numeric'
+            'name' => 'required',
+			'type' => 'required',
+			'link' => 'required'
 		];
 	}
 

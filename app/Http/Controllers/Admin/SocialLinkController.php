@@ -3,6 +3,8 @@
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
 
+use App\Http\Requests\SocialLinkRequest;
+use App\SocialLink;
 use Illuminate\Http\Request;
 
 class SocialLinkController extends Controller {
@@ -12,78 +14,48 @@ class SocialLinkController extends Controller {
         $this->middleware('auth');
     }
 
-	/**
-	 * Display a listing of the resource.
-	 *
-	 * @return Response
-	 */
-	public function index()
-	{
-		//
-	}
+    public function index()
+    {
+        $social_links = SocialLink::all();
 
-	/**
-	 * Show the form for creating a new resource.
-	 *
-	 * @return Response
-	 */
-	public function create()
-	{
-		//
-	}
+        return view('admin.social_link.index')->with('social_links', $social_links);
+    }
 
-	/**
-	 * Store a newly created resource in storage.
-	 *
-	 * @return Response
-	 */
-	public function store()
-	{
-		//
-	}
+    public function create()
+    {
+        return view('admin.social_link.create');
+    }
 
-	/**
-	 * Display the specified resource.
-	 *
-	 * @param  int  $id
-	 * @return Response
-	 */
-	public function show($id)
-	{
-		//
-	}
+    public function store(SocialLinkRequest $request)
+    {
+        SocialLink::create($request->all());
 
-	/**
-	 * Show the form for editing the specified resource.
-	 *
-	 * @param  int  $id
-	 * @return Response
-	 */
-	public function edit($id)
-	{
-		//
-	}
+        return redirect()->route('admin.social-link.index');
+    }
 
-	/**
-	 * Update the specified resource in storage.
-	 *
-	 * @param  int  $id
-	 * @return Response
-	 */
-	public function update($id)
-	{
-		//
-	}
+    public function edit($id)
+    {
+        $social_link = SocialLink::findOrFail($id);
 
-	/**
-	 * Remove the specified resource from storage.
-	 *
-	 * @param  int  $id
-	 * @return Response
-	 */
-	public function destroy($id)
-	{
-		//
-	}
+        return view('admin.social_link.edit')->with('social_link', $social_link);
+    }
+
+    public function update($id, SocialLinkRequest $request)
+    {
+        $social_link = SocialLink::findOrFail($id);
+
+        $social_link->update($request->all());
+
+        return redirect()->route('admin.social-link.index');
+    }
+
+    public function destroy($id)
+    {
+        $social_link = SocialLink::findOrFail($id);
+
+        $social_link->delete();
+
+        return redirect()->route('admin.social-link.index');
+    }
 
 }

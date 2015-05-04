@@ -22,6 +22,8 @@ class User extends Model implements AuthenticatableContract {
 	 */
 	protected $fillable = ['username', 'email', 'password', 'active'];
 
+    protected $casts = ['active' => 'boolean'];
+
 	/**
 	 * The attributes excluded from the model's JSON form.
 	 *

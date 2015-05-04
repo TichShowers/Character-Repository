@@ -3,24 +3,27 @@
 use App\Http\Requests\Request;
 use Illuminate\Auth\Guard;
 
-class CategoryRequest extends Request {
+class UserRequest extends Request {
 
     protected $auth;
 
+    /**
+     * @param Guard $auth
+     */
     public function __construct(Guard $auth)
     {
         $this->auth = $auth;
     }
 
-    /**
-     * Determine if the user is authorized to make this request.
-     *
-     * @return bool
-     */
-    public function authorize()
-    {
-        return $this->auth->check();
-    }
+	/**
+	 * Determine if the user is authorized to make this request.
+	 *
+	 * @return bool
+	 */
+	public function authorize()
+	{
+		return $this->auth->check();
+	}
 
 	/**
 	 * Get the validation rules that apply to the request.
@@ -30,9 +33,8 @@ class CategoryRequest extends Request {
 	public function rules()
 	{
 		return [
-			'name' => 'required',
-            'slug' => 'required',
-            'weight' => 'required|numeric'
+			'username' => 'required',
+            'email' => 'required'
 		];
 	}
 

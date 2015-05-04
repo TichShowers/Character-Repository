@@ -15,7 +15,7 @@ class CategoryController extends Controller {
 
 	public function index()
 	{
-        $categories = Category::weighted()->get();
+        $categories = Category::all();
 
 		return view('admin.category.index')->with('categories', $categories);
 	}
