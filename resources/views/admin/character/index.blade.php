@@ -19,6 +19,9 @@
                      <a href="{{ route('admin.character.edit', ['character' => $character->id]) }}" class="btn btn-primary">
                          <i class="glyphicon glyphicon-pencil"></i> Edit
                      </a>
+                     <a href="{{ route('admin.character.image', ['character' => $character->id]) }}" class="btn btn-default">
+                         <i class="glyphicon glyphicon-camera"></i> Upload Image
+                     </a>
                      <a href="{{ route('admin.character.delete', ['character' => $character->id]) }}" class="btn btn-danger" data-post="true">
                          <i class="glyphicon glyphicon-trash"></i> Delete
                      </a>

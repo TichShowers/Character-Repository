@@ -6,6 +6,7 @@ use App\Http\Requests;
 use App\Http\Controllers\Controller;
 
 use App\Http\Requests\CharacterRequest;
+use App\Http\Requests\ImageUploadRequest;
 use Illuminate\Http\Request;
 
 class CharacterController extends Controller {
@@ -66,6 +67,38 @@ class CharacterController extends Controller {
         $character->delete();
 
         return redirect()->route('admin.character.index');
+    }
+
+    public function image($id)
+    {
+        $character = Character::findOrFail($id);
+
+        return view('admin.character.image')->with('character', $character);
+    }
+
+    public function upload($id, ImageUploadRequest $request)
+    {
+        $character = Character::findOrFail($id);
+
+        if($request->file('image')->isValid())
+        {
+            $destinationPath = '/uploads/avatars'; // upload path
+            $extension = $request->file('image')->getClientOriginalExtension(); // getting image extension
+            $fileName = $character->slug.'.'.$extension;
+            $request->file('image')->move(base_path() . '/public'.$destinationPath, $fileName); // uploading file to given path
+            // sending back with message
+            //Session::flash('success', 'Upload successfully');
+
+            $character->image = $destinationPath.'/'.$fileName;
+            $character->save();
+
+            return redirect()->route('admin.character.index');
+        }
+        else
+        {
+            return view('admin.character.image')->with('character', $character)->withErrors(['image' => 'The uploaded file is not valid']);
+        }
+
     }
 
 }

@@ -37,6 +37,8 @@ Route::group(['prefix' => 'admin'], function(){
 
     createRouteGroup('social-link', 'SocialLinkController');
     createRouteGroup('character', 'CharacterController');
+    Route::get('character/image/{id}', ['as' => 'admin.character.image', 'uses' => 'Admin\CharacterController@image']);
+    Route::post('character/image/{id}', ['as' => 'admin.character.upload', 'uses' => 'Admin\CharacterController@upload']);
 });
 
 Route::get('/', ['as' => 'Home', 'uses' => 'CharacterController@index']);
