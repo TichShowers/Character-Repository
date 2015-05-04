@@ -19,6 +19,9 @@
                      <a href="{{ route('admin.user.edit', ['user' => $user->id]) }}" class="btn btn-primary">
                          <i class="glyphicon glyphicon-pencil"></i> Edit
                      </a>
+                     <a href="{{ route('admin.user.password', ['user' => $user->id]) }}" class="btn btn-default">
+                         <i class="glyphicon glyphicon-lock"></i> Change Password
+                     </a>
                      <a href="{{ route('admin.user.delete', ['user' => $user->id]) }}" class="btn btn-danger" data-post="true">
                          <i class="glyphicon glyphicon-trash"></i> Delete
                      </a>

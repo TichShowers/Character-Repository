@@ -32,6 +32,9 @@ Route::post('logout', 'AuthController@logout');
 Route::group(['prefix' => 'admin'], function(){
     createRouteGroup('category', 'CategoryController');
     createRouteGroup('user', 'UserController');
+    Route::get('user/password/{id}', ['as' => 'admin.user.password', 'uses' => 'Admin\UserController@password']);
+    Route::post('user/password/{id}', ['as' => 'admin.user.passwordsave', 'uses' => 'Admin\UserController@passwordsave']);
+
     createRouteGroup('social-link', 'SocialLinkController');
     createRouteGroup('character', 'CharacterController');
 });

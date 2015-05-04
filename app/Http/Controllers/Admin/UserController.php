@@ -3,9 +3,11 @@
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
 
+use App\Http\Requests\PasswordChangeRequest;
 use App\Http\Requests\UserRequest;
 use App\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
 
 class UserController extends Controller {
 
@@ -30,7 +32,7 @@ class UserController extends Controller {
     {
         User::create($request->all());
 
-        return redirect()->route('admin.users.index');
+        return redirect()->route('admin.user.index');
     }
 
     public function edit($id)
@@ -46,7 +48,7 @@ class UserController extends Controller {
 
         $user->update($request->all());
 
-        return redirect()->route('admin.users.index');
+        return redirect()->route('admin.user.index');
     }
 
     public function destroy($id)
@@ -55,7 +57,25 @@ class UserController extends Controller {
 
         $user->delete();
 
-        return redirect()->route('admin.users.index');
+        return redirect()->route('admin.user.index');
+    }
+
+    public function password($id)
+    {
+        $user = User::findOrFail($id);
+
+        return view('admin.user.password')->with('user', $user);
+    }
+
+    public function passwordsave($id, PasswordChangeRequest $request)
+    {
+        $user = User::findOrFail($id);
+
+        $user->password = Hash::make($request->get('password'));
+
+        $user->save();
+
+        return redirect()->route('admin.user.index');
     }
 
 }
