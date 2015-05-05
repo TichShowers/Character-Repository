@@ -12,7 +12,7 @@
 
 <div class="form-group">
     {!! Form::label('active', 'Account Enabled: ') !!}
-    {!! Form::checkbox('active', null, ['class' => 'form-control']) !!}
+    {!! Form::checkbox('active') !!}
 </div>
 
 <div class="form-group">
