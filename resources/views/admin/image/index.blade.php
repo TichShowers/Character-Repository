@@ -1,14 +1,13 @@
 @extends('shared/_adminlayout')
 
 @section('title')
-    Categories
+    Image
 @endsection
 
 @section('content')
+    <a href="{{ route('admin.category.create') }}" class="btn btn-primary btn-lg"><i class="glyphicon glyphicon-plus"></i> Create new Category</a>
 
-    <h1>Categories</h1>
-
-    <a href="{{ route('admin.category.create') }}" class="btn btn-primary btn-lg">Create new Category</a>
+    <hr />
 
     @if($categories->count())
         <ul class="list-group">

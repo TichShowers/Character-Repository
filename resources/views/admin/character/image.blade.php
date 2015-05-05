@@ -1,7 +1,7 @@
 @extends('shared/_adminlayout')
 
 @section('title')
-    Upload Image for {{ $character->name }}
+    Image
 @endsection
 
 @section('content')
@@ -16,7 +16,7 @@
     </div>
 
     <div class="form-group">
-        {!! Form::submit('Upload', ['class' => 'form-control btn btn-primary']) !!}
+        {!! Form::submit('Upload', ['class' => 'form-control btn btn-primary']) !!} <a href="{{ route('admin.character.index') }}" class="btn btn-default">cancel</a>
     </div>
     {!! Form::close() !!}
 @endsection

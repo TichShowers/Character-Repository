@@ -1,7 +1,7 @@
 @extends('shared/_adminlayout')
 
 @section('title')
-    New Social Media Link
+    Social Media Link
 @endsection
 
 @section('content')

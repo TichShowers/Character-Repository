@@ -1,7 +1,7 @@
 @extends('shared/_adminlayout')
 
 @section('title')
-    Change Password
+    User
 @endsection
 
 @section('content')
@@ -22,7 +22,7 @@
     </div>
 
     <div class="form-group">
-        {!! Form::submit('Change Password', ['class' => 'form-control btn btn-primary']) !!}
+        {!! Form::submit('Change Password', ['class' => 'form-control btn btn-primary']) !!} <a href="{{ route('admin.user.index') }}" class="btn btn-default">cancel</a>
     </div>
     {!! Form::close() !!}
 @endsection

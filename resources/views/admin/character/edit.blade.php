@@ -1,7 +1,7 @@
 @extends('shared/_adminlayout')
 
 @section('title')
-    Editing Character
+    Character
 @endsection
 
 @section('content')

@@ -6,9 +6,9 @@
 
 @section('content')
 
-    <h1>Social Media Links</h1>
+    <a href="{{ route('admin.social-link.create') }}" class="btn btn-primary btn-lg"><i class="glyphicon glyphicon-plus"></i> Create new Social Media Link</a>
 
-    <a href="{{ route('admin.social-link.create') }}" class="btn btn-primary btn-lg">Create new Social Media Link</a>
+    <hr />
 
     @if($social_links->count())
         <ul class="list-group">

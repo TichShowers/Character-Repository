@@ -6,9 +6,9 @@
 
 @section('content')
 
-    <h1>Users</h1>
+    <a href="{{ route('admin.user.create') }}" class="btn btn-primary btn-lg"><i class="glyphicon glyphicon-plus"></i> Create new User</a>
 
-    <a href="{{ route('admin.user.create') }}" class="btn btn-primary btn-lg">Create new user</a>
+    <hr />
 
     @if($users->count())
         <ul class="list-group">
@@ -17,7 +17,7 @@
                  {{ $user->username }}
                  <span class="pull-right btn-group btn-group-xs">
                      <a href="{{ route('admin.user.edit', ['user' => $user->id]) }}" class="btn btn-primary">
-                         <i class="glyphicon glyphicon-pencil"></i> Edit
+                         <i class="glyphicon glyphicon-edit"></i> Edit
                      </a>
                      <a href="{{ route('admin.user.password', ['user' => $user->id]) }}" class="btn btn-default">
                          <i class="glyphicon glyphicon-lock"></i> Change Password

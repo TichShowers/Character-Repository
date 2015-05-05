@@ -23,7 +23,7 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                <a class="navbar-brand" href="{{ route('admin.character.index') }}">@yield('title') Admin Panel</a>
+                <a class="navbar-brand" href="{{ route('admin.character.index') }}">@yield('title') Administration Panel</a>
             </div>
 
             <div class="collapse navbar-collapse navbar-ex1-collapse">

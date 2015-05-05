@@ -5,10 +5,9 @@
 @endsection
 
 @section('content')
+    <a href="{{ route('admin.character.create') }}" class="btn btn-primary btn-lg"><i class="glyphicon glyphicon-plus"></i> Create new Character</a>
 
-    <h1>Characters</h1>
-
-    <a href="{{ route('admin.character.create') }}" class="btn btn-primary btn-lg">Create new Character</a>
+    <hr/>
 
     @if($characters->count())
         <ul class="list-group">
@@ -30,7 +29,7 @@
          @endforeach
         </ul>
     @else
-        <p>No Character</p>
+        <p>No Characters</p>
     @endif
 
     <form id="anti-forgery-token">

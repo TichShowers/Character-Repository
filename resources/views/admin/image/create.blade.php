@@ -1,7 +1,7 @@
 @extends('shared/_adminlayout')
 
 @section('title')
-    New Category
+    Image
 @endsection
 
 @section('content')

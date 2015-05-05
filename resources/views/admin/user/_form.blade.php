@@ -16,5 +16,5 @@
 </div>
 
 <div class="form-group">
-    {!! Form::submit($submit, ['class' => 'form-control btn btn-primary']) !!}
+    {!! Form::submit($submit, ['class' => 'btn btn-primary']) !!} <a href="{{ route('admin.user.index') }}" class="btn btn-default">cancel</a>
 </div>
