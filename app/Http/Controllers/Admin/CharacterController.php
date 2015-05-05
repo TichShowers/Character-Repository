@@ -7,6 +7,7 @@ use App\Http\Controllers\Controller;
 
 use App\Http\Requests\CharacterRequest;
 use App\Http\Requests\ImageUploadRequest;
+use App\Image;
 use Illuminate\Http\Request;
 
 class CharacterController extends Controller {
@@ -99,6 +100,36 @@ class CharacterController extends Controller {
             return view('admin.character.image')->with('character', $character)->withErrors(['image' => 'The uploaded file is not valid']);
         }
 
+    }
+
+    public function assign($id)
+    {
+        $character = Character::findOrFail($id);
+        $images = Image::all();
+
+        return view('admin.character.assign', compact('character', 'images'));
+    }
+
+    public function add($id, $image)
+    {
+        $character = Character::findOrFail($id);
+        $image = Image::findOrFail($image);
+        if(!$character->images->contains($image->id))
+            $character->images()->attach($image->id);
+        $character->save();
+
+        return 'success';
+    }
+
+    public function remove($id, $image)
+    {
+        $character = Character::findOrFail($id);
+        $image = Image::findOrFail($image);
+        if($character->images->contains($image->id))
+            $character->images()->detach($image->id);
+        $character->save();
+
+        return 'success';
     }
 
 }

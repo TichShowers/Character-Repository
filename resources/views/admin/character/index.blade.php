@@ -15,13 +15,16 @@
              <li class="list-group-item">
                  {{ $character->name }}
                  <span class="pull-right btn-group btn-group-xs">
-                     <a href="{{ route('admin.character.edit', ['character' => $character->id]) }}" class="btn btn-primary">
+                     <a href="{{ route('admin.character.edit', ['id' => $character->id]) }}" class="btn btn-primary">
                          <i class="glyphicon glyphicon-pencil"></i> Edit
                      </a>
-                     <a href="{{ route('admin.character.image', ['character' => $character->id]) }}" class="btn btn-default">
+                     <a href="{{ route('admin.character.image', ['id' => $character->id]) }}" class="btn btn-default">
                          <i class="glyphicon glyphicon-camera"></i> Upload Image
                      </a>
-                     <a href="{{ route('admin.character.delete', ['character' => $character->id]) }}" class="btn btn-danger" data-post="true">
+                     <a href="{{ route('admin.character.assign', ['id' => $character->id]) }}" class="btn btn-success">
+                         <i class="glyphicon glyphicon-picture"></i> Setup gallery
+                     </a>
+                     <a href="{{ route('admin.character.delete', ['id' => $character->id]) }}" class="btn btn-danger" data-post="true">
                          <i class="glyphicon glyphicon-trash"></i> Delete
                      </a>
                  </span>

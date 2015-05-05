@@ -8,9 +8,9 @@ class Image extends Model {
 
     protected $fillable = ['name', 'url'];
 
-    public function characterr()
+    public function characters()
     {
-        return $this->belongsToMany('App/Character');
+        return $this->belongsToMany('App\Character');
     }
 
 }
