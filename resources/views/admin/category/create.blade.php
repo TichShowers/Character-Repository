@@ -1,7 +1,7 @@
 @extends('shared/_adminlayout')
 
 @section('title')
-    Category
+    Categories
 @endsection
 
 @section('content')
