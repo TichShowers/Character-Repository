@@ -5,6 +5,7 @@
 @endsection
 
 @section('content')
+    <a href="{{ route('admin.category.create') }}" class="btn btn-primary btn-lg"><i class="glyphicon glyphicon-plus"></i> Create new Category</a>
     @if($categories->count())
         <a href="{{ route('admin.character.create') }}" class="btn btn-primary btn-lg"><i class="glyphicon glyphicon-plus"></i> Create new Character</a>
 
@@ -12,7 +13,20 @@
 
         <ul class="list-group">
             @foreach($categories as $category)
-                <li class="list-group-item "><h2 class="list-group-item-heading">{{ $category->name }}</h2></li>
+                <li class="list-group-item ">
+                    <h2 class="list-group-item-heading">
+                        {{ $category->name }}
+                        <span class="pull-right btn-group btn-group-xs">
+                             <a href="{{ route('admin.category.edit', ['category' => $category->id]) }}" class="btn btn-primary">
+                                 <i class="glyphicon glyphicon-pencil"></i> Edit
+                             </a>
+                             <a href="{{ route('admin.category.delete', ['category' => $category->id]) }}" class="btn btn-danger" data-post="true">
+                                 <i class="glyphicon glyphicon-trash"></i> Delete
+                             </a>
+                         </span>
+                    </h2>
+
+                </li>
                 @if($category->characters->count())
                     @foreach($category->characters as $character)
                         <li class="list-group-item">
@@ -33,7 +47,6 @@
                              </span>
                         </li>
                     @endforeach
-
                 @else
                     <li class="list-group-item">There are no characters associated with this category</li>
                 @endif

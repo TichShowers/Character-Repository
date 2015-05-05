@@ -29,7 +29,7 @@ class CategoryController extends Controller {
 	{
         Category::create($request->all());
 
-        return redirect()->route('admin.category.index');
+        return redirect()->route('admin.character.index');
 	}
 
 	public function edit($id)
@@ -45,7 +45,7 @@ class CategoryController extends Controller {
 
         $category->update($request->all());
 
-        return redirect()->route('admin.category.index');
+        return redirect()->route('admin.character.index');
 	}
 
 	public function destroy($id)
@@ -54,7 +54,7 @@ class CategoryController extends Controller {
 
         $category->delete();
 
-        return redirect()->route('admin.category.index');
+        return redirect()->route('admin.character.index');
 	}
 
 }

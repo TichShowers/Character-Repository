@@ -5,8 +5,6 @@
 @endsection
 
 @section('content')
-
-
     {!! Form::open() !!}
         <div>
             {!! Form::label('username', 'Username: ') !!}
@@ -22,6 +20,4 @@
             {!! Form::submit('Login', []) !!}
         </div>
     {!! Form::close() !!}
-
-    
 @endsection

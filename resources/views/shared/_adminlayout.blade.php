@@ -29,8 +29,7 @@
 
             <div class="collapse navbar-collapse navbar-ex1-collapse">
                 <ul id="active" class="nav navbar-nav side-nav">
-                    <li {!! Request::is('admin/character*') ? ' class="selected"' : '' !!}><a href="{{ route('admin.character.index') }}"><i class="glyphicon glyphicon-heart"></i> Characters</a></li>
-                    <li {!! Request::is('admin/category*') ? ' class="selected"' : '' !!}><a href="{{ route('admin.category.index') }}"><i class="glyphicon glyphicon-th-list"></i> Categories</a></li>
+                    <li {!! Request::is('admin/character*') ? ' class="selected"' : '' !!}><a href="{{ route('admin.character.index') }}"><i class="glyphicon glyphicon-th-list"></i> Characters</a></li>
                     <li {!! Request::is('admin/user*') ? ' class="selected"' : '' !!}><a href="{{ route('admin.user.index') }}"><i class="glyphicon glyphicon-user"></i> Users</a></li>
                     <li {!! Request::is('admin/image*') ? ' class="selected"' : '' !!}><a href="{{ route('admin.image.index') }}"><i class="glyphicon glyphicon-picture"></i> Images</a></li>
                     <li {!! Request::is('admin/social-link*') ? ' class="selected"' : '' !!}><a href="{{ route('admin.social-link.index') }}"><i class="glyphicon glyphicon-share-alt"></i> Social Media</a></li>
