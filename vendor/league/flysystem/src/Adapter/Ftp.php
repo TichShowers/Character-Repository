@@ -283,9 +283,11 @@ class Ftp extends AbstractFtpAdapter
         // List the current directory
         $listing = ftp_nlist($connection, '.');
 
-        $listing = array_map(function ($item) {
-            return ltrim($item, './');
-        }, $listing);
+        foreach ($listing as $key => $item) {
+            if (preg_match('~^\./.*~', $item)) {
+                $listing[$key] = substr($item, 2);
+            }
+        }
 
         if (in_array($directory, $listing)) {
             return true;
@@ -385,10 +387,6 @@ class Ftp extends AbstractFtpAdapter
     {
         $listing = ftp_rawlist($this->getConnection(), '-lna '.$directory, $recursive);
 
-        if ($listing === false) {
-            return [];
-        }
-
-        return $this->normalizeListing($listing, $directory);
+        return $listing ? $this->normalizeListing($listing, $directory) : [];
     }
 }

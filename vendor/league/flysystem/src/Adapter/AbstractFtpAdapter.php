@@ -45,7 +45,12 @@ abstract class AbstractFtpAdapter extends AbstractAdapter
             if (! isset($config[$setting])) {
                 continue;
             }
-            $this->{'set'.ucfirst($setting)}($config[$setting]);
+
+            $method = 'set'.ucfirst($setting);
+
+            if (method_exists($this, $method)) {
+                $this->$method($config[$setting]);
+            }
         }
 
         return $this;
@@ -285,7 +290,7 @@ abstract class AbstractFtpAdapter extends AbstractAdapter
      */
     protected function normalizeObject($item, $base)
     {
-        $item = preg_replace('#\s+#', ' ', trim($item));
+        $item = preg_replace('#\s+#', ' ', trim($item), 7);
         list($permissions, /* $number */, /* $owner */, /* $group */, $size, /* $month */, /* $day */, /* $time*/, $name) = explode(' ', $item, 9);
         $type = $this->detectType($permissions);
         $path = empty($base) ? $name : $base.$this->separator.$name;

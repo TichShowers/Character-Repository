@@ -11,6 +11,7 @@
 use SebastianBergmann\GlobalState\Snapshot;
 use SebastianBergmann\GlobalState\Restorer;
 use SebastianBergmann\GlobalState\Blacklist;
+use SebastianBergmann\Diff\Differ;
 use SebastianBergmann\Exporter\Exporter;
 use Prophecy\Exception\Prediction\PredictionException;
 use Prophecy\Prophet;
@@ -263,6 +264,11 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
      * @var Prophecy\Prophet
      */
     private $prophet;
+
+    /**
+     * @var boolean
+     */
+    private $disallowChangesToGlobalState = false;
 
     /**
      * Constructs a test case with the given name.
@@ -538,7 +544,7 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
             $this->name
         );
 
-        if ($missingRequirements) {
+        if (!empty($missingRequirements)) {
             $this->markTestSkipped(implode(PHP_EOL, $missingRequirements));
         }
     }
@@ -949,9 +955,7 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
         if ($this->prophet !== null) {
             try {
                 $this->prophet->checkPredictions();
-            }
-
-            catch (Exception $e) {
+            } catch (Exception $e) {
                 /** Intentionally left empty */
             }
 
@@ -1010,6 +1014,15 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
     public function setDependencyInput(array $dependencyInput)
     {
         $this->dependencyInput = $dependencyInput;
+    }
+
+    /**
+     * @param boolean $disallowChangesToGlobalState
+     * @since Method available since Release 4.6.0
+     */
+    public function setDisallowChangesToGlobalState($disallowChangesToGlobalState)
+    {
+        $this->disallowChangesToGlobalState = $disallowChangesToGlobalState;
     }
 
     /**
@@ -1194,7 +1207,7 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
         $locale   = $args[1];
 
         $categories = array(
-          LC_ALL, LC_COLLATE, LC_CTYPE, LC_MONETARY, LC_NUMERIC, LC_TIME
+            LC_ALL, LC_COLLATE, LC_CTYPE, LC_MONETARY, LC_NUMERIC, LC_TIME
         );
 
         if (defined('LC_MESSAGES')) {
@@ -1211,7 +1224,7 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
 
         $this->locale[$category] = setlocale($category, null);
 
-        $result = call_user_func_array( 'setlocale', $args );
+        $result = call_user_func_array('setlocale', $args);
 
         if ($result === false) {
             throw new PHPUnit_Framework_Exception(
@@ -1744,7 +1757,9 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
                 }
 
                 if (isset($passed[$dependency])) {
-                    if ($passed[$dependency]['size'] > $this->getSize()) {
+                    if ($passed[$dependency]['size'] != PHPUnit_Util_Test::UNKNOWN &&
+                        $this->getSize() != PHPUnit_Util_Test::UNKNOWN &&
+                        $passed[$dependency]['size'] > $this->getSize()) {
                         $this->result->addError(
                             $this,
                             new PHPUnit_Framework_SkippedTestError(
@@ -1910,52 +1925,14 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
 
     private function snapshotGlobalState()
     {
-        if ($this->runTestInSeparateProcess || $this->inIsolation) {
+        $backupGlobals = $this->backupGlobals === null || $this->backupGlobals === true;
+
+        if ($this->runTestInSeparateProcess || $this->inIsolation ||
+            (!$backupGlobals && !$this->backupStaticAttributes)) {
             return;
         }
 
-        $backupGlobals = $this->backupGlobals === null || $this->backupGlobals === true;
-
-        if ($backupGlobals || $this->backupStaticAttributes) {
-            $blacklist = new Blacklist;
-
-            if ($backupGlobals) {
-                foreach ($this->backupGlobalsBlacklist as $globalVariable) {
-                    $blacklist->addGlobalVariable($globalVariable);
-                }
-            }
-
-            if ($this->backupStaticAttributes && !defined('PHPUNIT_TESTSUITE')) {
-                $blacklist->addClassNamePrefix('PHPUnit');
-                $blacklist->addClassNamePrefix('File_Iterator');
-                $blacklist->addClassNamePrefix('PHP_CodeCoverage');
-                $blacklist->addClassNamePrefix('PHP_Invoker');
-                $blacklist->addClassNamePrefix('PHP_Timer');
-                $blacklist->addClassNamePrefix('PHP_Token');
-                $blacklist->addClassNamePrefix('Symfony');
-                $blacklist->addClassNamePrefix('Text_Template');
-                $blacklist->addClassNamePrefix('Doctrine\Instantiator');
-
-                foreach ($this->backupStaticAttributesBlacklist as $class => $attributes) {
-                    foreach ($attributes as $attribute) {
-                        $blacklist->addStaticAttribute($class, $attribute);
-                    }
-                }
-            }
-
-            $this->snapshot = new Snapshot(
-                $blacklist,
-                $backupGlobals,
-                $this->backupStaticAttributes,
-                false,
-                false,
-                false,
-                false,
-                false,
-                false,
-                false
-            );
-        }
+        $this->snapshot = $this->createGlobalStateSnapshot($backupGlobals);
     }
 
     private function restoreGlobalState()
@@ -1964,9 +1941,18 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
             return;
         }
 
+        $backupGlobals = $this->backupGlobals === null || $this->backupGlobals === true;
+
+        if ($this->disallowChangesToGlobalState) {
+            $this->compareGlobalStateSnapshots(
+                $this->snapshot,
+                $this->createGlobalStateSnapshot($backupGlobals)
+            );
+        }
+
         $restorer = new Restorer;
 
-        if ($this->backupGlobals === null || $this->backupGlobals === true) {
+        if ($backupGlobals) {
             $restorer->restoreGlobalVariables($this->snapshot);
         }
 
@@ -1975,6 +1961,105 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
         }
 
         $this->snapshot = null;
+    }
+
+    /**
+     * @param  boolean $backupGlobals
+     * @return Snapshot
+     */
+    private function createGlobalStateSnapshot($backupGlobals)
+    {
+        $blacklist = new Blacklist;
+
+        foreach ($this->backupGlobalsBlacklist as $globalVariable) {
+            $blacklist->addGlobalVariable($globalVariable);
+        }
+
+        if (!defined('PHPUNIT_TESTSUITE')) {
+            $blacklist->addClassNamePrefix('PHPUnit');
+            $blacklist->addClassNamePrefix('File_Iterator');
+            $blacklist->addClassNamePrefix('PHP_CodeCoverage');
+            $blacklist->addClassNamePrefix('PHP_Invoker');
+            $blacklist->addClassNamePrefix('PHP_Timer');
+            $blacklist->addClassNamePrefix('PHP_Token');
+            $blacklist->addClassNamePrefix('Symfony');
+            $blacklist->addClassNamePrefix('Text_Template');
+            $blacklist->addClassNamePrefix('Doctrine\Instantiator');
+
+            foreach ($this->backupStaticAttributesBlacklist as $class => $attributes) {
+                foreach ($attributes as $attribute) {
+                    $blacklist->addStaticAttribute($class, $attribute);
+                }
+            }
+        }
+
+        return new Snapshot(
+            $blacklist,
+            $backupGlobals,
+            $this->backupStaticAttributes,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false
+        );
+    }
+
+    /**
+     * @param  Snapshot $before
+     * @param  Snapshot $after
+     * @throws PHPUnit_Framework_RiskyTestError
+     */
+    private function compareGlobalStateSnapshots(Snapshot $before, Snapshot $after)
+    {
+        $backupGlobals = $this->backupGlobals === null || $this->backupGlobals === true;
+
+        if ($backupGlobals) {
+            $this->compareGlobalStateSnapshotPart(
+                $before->globalVariables(),
+                $after->globalVariables(),
+                "--- Global variables before the test\n+++ Global variables after the test\n"
+            );
+
+            $this->compareGlobalStateSnapshotPart(
+                $before->superGlobalVariables(),
+                $after->superGlobalVariables(),
+                "--- Super-global variables before the test\n+++ Super-global variables after the test\n"
+            );
+        }
+
+        if ($this->backupStaticAttributes) {
+            $this->compareGlobalStateSnapshotPart(
+                $before->staticAttributes(),
+                $after->staticAttributes(),
+                "--- Static attributes before the test\n+++ Static attributes after the test\n"
+            );
+        }
+    }
+
+    /**
+     * @param  array  $before
+     * @param  array  $after
+     * @param  string $header
+     * @throws PHPUnit_Framework_RiskyTestError
+     */
+    private function compareGlobalStateSnapshotPart(array $before, array $after, $header)
+    {
+        if ($before != $after) {
+            $differ   = new Differ($header);
+            $exporter = new Exporter;
+
+            $diff = $differ->diff(
+                $exporter->export($before),
+                $exporter->export($after)
+            );
+
+            throw new PHPUnit_Framework_RiskyTestError(
+                $diff
+            );
+        }
     }
 
     /**

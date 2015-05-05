@@ -7,6 +7,7 @@ use FilesystemIterator;
 use Finfo;
 use League\Flysystem\AdapterInterface;
 use League\Flysystem\Config;
+use League\Flysystem\NotSupportedException;
 use League\Flysystem\Util;
 use RecursiveDirectoryIterator;
 use RecursiveIteratorIterator;
@@ -33,7 +34,7 @@ class Local extends AbstractAdapter
     {
         $realRoot = $this->ensureDirectory($root);
 
-        if ( ! is_dir($realRoot) || ! is_readable($realRoot)) {
+        if (! is_dir($realRoot) || ! is_readable($realRoot)) {
             throw new \LogicException('The root path '.$root.' is not readable.');
         }
 
@@ -316,7 +317,7 @@ class Local extends AbstractAdapter
         $contents = array_reverse($contents);
 
         foreach ($contents as $file) {
-            if ($file['type'] === 'file') {
+            if ($file['type'] !== 'dir') {
                 unlink($this->applyPathPrefix($file['path']));
             } else {
                 rmdir($this->applyPathPrefix($file['path']));
@@ -335,11 +336,16 @@ class Local extends AbstractAdapter
      */
     protected function normalizeFileInfo(SplFileInfo $file)
     {
+        if ($file->isLink()) {
+            throw NotSupportedException::forLink($file);
+        }
+
         $normalized = [
             'type' => $file->getType(),
             'path' => $this->getFilePath($file),
-            'timestamp' => $file->getMTime(),
         ];
+
+        $normalized['timestamp'] = $file->getMTime();
 
         if ($normalized['type'] === 'file') {
             $normalized['size'] = $file->getSize();
