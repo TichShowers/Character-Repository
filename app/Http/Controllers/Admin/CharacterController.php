@@ -19,9 +19,9 @@ class CharacterController extends Controller {
 
     public function index()
     {
-        $characters = Character::all();
+        $categories = Category::weighted()->get();
 
-        return view('admin.character.index')->with('characters', $characters);
+        return view('admin.character.index', compact('categories'));
     }
 
     public function create()

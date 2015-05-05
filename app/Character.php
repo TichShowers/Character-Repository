@@ -17,9 +17,6 @@ class Character extends Model {
         return $this->belongsTo('App\Category');
     }
 
-    // $cat->characters()->create(['name' => 'Tich Showers', 'slug'=>'tich-showers','description'=>'Cool blue hair']);
-
-
     public function images()
     {
         return $this->belongsToMany('App\Image');

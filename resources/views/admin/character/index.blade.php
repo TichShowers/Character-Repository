@@ -5,34 +5,42 @@
 @endsection
 
 @section('content')
-    <a href="{{ route('admin.character.create') }}" class="btn btn-primary btn-lg"><i class="glyphicon glyphicon-plus"></i> Create new Character</a>
+    @if($categories->count())
+        <a href="{{ route('admin.character.create') }}" class="btn btn-primary btn-lg"><i class="glyphicon glyphicon-plus"></i> Create new Character</a>
 
-    <hr/>
+        <hr/>
 
-    @if($characters->count())
         <ul class="list-group">
-         @foreach($characters as $character)
-             <li class="list-group-item">
-                 {{ $character->name }}
-                 <span class="pull-right btn-group btn-group-xs">
-                     <a href="{{ route('admin.character.edit', ['id' => $character->id]) }}" class="btn btn-primary">
-                         <i class="glyphicon glyphicon-pencil"></i> Edit
-                     </a>
-                     <a href="{{ route('admin.character.image', ['id' => $character->id]) }}" class="btn btn-default">
-                         <i class="glyphicon glyphicon-camera"></i> Upload Image
-                     </a>
-                     <a href="{{ route('admin.character.assign', ['id' => $character->id]) }}" class="btn btn-success">
-                         <i class="glyphicon glyphicon-picture"></i> Setup gallery
-                     </a>
-                     <a href="{{ route('admin.character.delete', ['id' => $character->id]) }}" class="btn btn-danger" data-post="true">
-                         <i class="glyphicon glyphicon-trash"></i> Delete
-                     </a>
-                 </span>
-             </li>
-         @endforeach
+            @foreach($categories as $category)
+                <li class="list-group-item "><h2 class="list-group-item-heading">{{ $category->name }}</h2></li>
+                @if($category->characters->count())
+                    @foreach($category->characters as $character)
+                        <li class="list-group-item">
+                            {{ $character->name }}
+                            <span class="pull-right btn-group btn-group-xs">
+                                 <a href="{{ route('admin.character.edit', ['id' => $character->id]) }}" class="btn btn-primary">
+                                     <i class="glyphicon glyphicon-pencil"></i> Edit
+                                 </a>
+                                 <a href="{{ route('admin.character.image', ['id' => $character->id]) }}" class="btn btn-default">
+                                     <i class="glyphicon glyphicon-camera"></i> Upload Image
+                                 </a>
+                                 <a href="{{ route('admin.character.assign', ['id' => $character->id]) }}" class="btn btn-success">
+                                     <i class="glyphicon glyphicon-picture"></i> Setup gallery
+                                 </a>
+                                 <a href="{{ route('admin.character.delete', ['id' => $character->id]) }}" class="btn btn-danger" data-post="true">
+                                     <i class="glyphicon glyphicon-trash"></i> Delete
+                                 </a>
+                             </span>
+                        </li>
+                    @endforeach
+
+                @else
+                    <li class="list-group-item">There are no characters associated with this category</li>
+                @endif
+            @endforeach
         </ul>
     @else
-        <p>No Characters</p>
+        <p>You have no categories.</p>
     @endif
 
     <form id="anti-forgery-token">

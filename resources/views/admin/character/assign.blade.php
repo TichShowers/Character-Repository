@@ -7,6 +7,10 @@
 @section('content')
     <h2>Adding images to {{ $character->name }}</h2>
 
+    <a href="{{ route('admin.character.index') }}" class="btn btn-primary">Back to index</a>
+
+    <hr/>
+
     @if($images->count())
         <div class="row">
             @foreach($images as $image)
@@ -27,6 +31,8 @@
     @else
         <p>No Images uploaded</p>
     @endif
+
+    <a href="{{ route('admin.character.index') }}" class="btn btn-primary">Back to index</a>
 
     <form id="anti-forgery-token">
         {!! Form::token() !!}
