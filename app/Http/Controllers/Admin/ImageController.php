@@ -3,6 +3,7 @@
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
 
+use App\Image;
 use Illuminate\Http\Request;
 
 class ImageController extends Controller {
@@ -12,78 +13,80 @@ class ImageController extends Controller {
         $this->middleware('auth');
     }
 
-	/**
-	 * Display a listing of the resource.
-	 *
-	 * @return Response
-	 */
-	public function index()
-	{
-		//
-	}
+    public function index()
+    {
+        $image = Image::all();
 
-	/**
-	 * Show the form for creating a new resource.
-	 *
-	 * @return Response
-	 */
-	public function create()
-	{
-		//
-	}
+        return view('admin.image.index')->with('Image', $image);
+    }
 
-	/**
-	 * Store a newly created resource in storage.
-	 *
-	 * @return Response
-	 */
-	public function store()
-	{
-		//
-	}
+    public function create()
+    {
+        return view('admin.image.create');
+    }
 
-	/**
-	 * Display the specified resource.
-	 *
-	 * @param  int  $id
-	 * @return Response
-	 */
-	public function show($id)
-	{
-		//
-	}
+    public function store(SocialLinkRequest $request)
+    {
+        Image::create($request->all());
 
-	/**
-	 * Show the form for editing the specified resource.
-	 *
-	 * @param  int  $id
-	 * @return Response
-	 */
-	public function edit($id)
-	{
-		//
-	}
+        return redirect()->route('admin.image.index');
+    }
 
-	/**
-	 * Update the specified resource in storage.
-	 *
-	 * @param  int  $id
-	 * @return Response
-	 */
-	public function update($id)
-	{
-		//
-	}
+    public function edit($id)
+    {
+        $image = Image::findOrFail($id);
 
-	/**
-	 * Remove the specified resource from storage.
-	 *
-	 * @param  int  $id
-	 * @return Response
-	 */
-	public function destroy($id)
-	{
-		//
-	}
+        return view('admin.image.edit')->with('image', $image);
+    }
+
+    public function update($id, SocialLinkRequest $request)
+    {
+        $image = Image::findOrFail($id);
+
+        $image->update($request->all());
+
+        return redirect()->route('admin.image.index');
+    }
+
+    public function destroy($id)
+    {
+        $image = Image::findOrFail($id);
+
+        $image->delete();
+
+        return redirect()->route('admin.image.index');
+    }
+
+    public function image($id)
+    {
+        $image = Image::findOrFail($id);
+
+        return view('admin.character.image')->with('imagedata', $image);
+    }
+
+    public function upload($id, ImageUploadRequest $request)
+    {
+        $image_data = Image::findOrFail($id);
+
+        if($request->file('image')->isValid())
+        {
+            $destinationPath = '/uploads/gallery'; // upload path
+            $extension = $request->file('image')->getClientOriginalExtension(); // getting image extension
+            $fileName = $image_data->slug.'.'.$extension;
+            $request->file('image')->move(base_path() . '/public'.$destinationPath, $fileName); // uploading file to given path
+            // sending back with message
+            //Session::flash('success', 'Upload successfully');
+
+            $image_data->image = $destinationPath.'/'.$fileName;
+            $image_data->save();
+
+            return redirect()->route('admin.image.index');
+        }
+        else
+        {
+            return view('admin.image.image')->with('imagedata', $image_data)->withErrors(['image' => 'The uploaded file is not valid']);
+        }
+
+    }
 
 }

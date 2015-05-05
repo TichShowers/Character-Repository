@@ -37,7 +37,3 @@
         {!! Form::token() !!}
     </form>
 @endsection
-
-@section("scripts")
-    <script type="text/javascript" src="/js/formsubmitter.js"></script>
-@endsection

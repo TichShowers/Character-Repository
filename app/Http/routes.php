@@ -39,6 +39,10 @@ Route::group(['prefix' => 'admin'], function(){
     createRouteGroup('character', 'CharacterController');
     Route::get('character/image/{id}', ['as' => 'admin.character.image', 'uses' => 'Admin\CharacterController@image']);
     Route::post('character/image/{id}', ['as' => 'admin.character.upload', 'uses' => 'Admin\CharacterController@upload']);
+
+    createRouteGroup('image', 'ImageController');
+    Route::get('image/image/{id}', ['as' => 'admin.image.image', 'uses' => 'Admin\ImageController@image']);
+    Route::post('image/image/{id}', ['as' => 'admin.image.upload', 'uses' => 'Admin\ImageController@upload']);
 });
 
 Route::get('/', ['as' => 'Home', 'uses' => 'CharacterController@index']);
