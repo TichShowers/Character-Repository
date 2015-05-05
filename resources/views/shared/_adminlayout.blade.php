@@ -9,7 +9,8 @@
     <title>@yield('title') - Administration page</title>
 
     <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css">
-        <link rel="stylesheet" type="text/css" href="/css/local.css" />
+    <link rel="stylesheet" type="text/css" href="/css/local.css" />
+    <link rel="stylesheet" type="text/css" href="/css/admin.css" />
 
 </head>
 <body>

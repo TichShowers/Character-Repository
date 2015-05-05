@@ -5,9 +5,15 @@
 @endsection
 
 @section('content')
-    <h1>Editing Category {{ $category->name }}</h1>
+    <h1>Changing details for image {{ $image->name }}</h1>
 
-    {!! Form::model($category, ['route' => ['admin.category.update', $category->id]]) !!}
-    @include('admin/category/_form', ['submit' => 'Update Category'])
+    {!! Form::model($image, ['route' => ['admin.image.update', $image->id]]) !!}
+    @include('shared/_errors')
+
+    @include('admin/image/_form')
+
+    <div class="form-group">
+        {!! Form::submit('Change details', ['class' => 'btn btn-primary']) !!} <a href="{{ route('admin.image.index') }}" class="btn btn-default">cancel</a>
+    </div>
     {!! Form::close() !!}
 @endsection

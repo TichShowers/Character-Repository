@@ -3,6 +3,9 @@
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
 
+use App\Http\Requests\CreateImageRequest;
+use App\Http\Requests\EditImageRequest;
+use App\Http\Requests\ImageUploadRequest;
 use App\Image;
 use Illuminate\Http\Request;
 
@@ -15,9 +18,9 @@ class ImageController extends Controller {
 
     public function index()
     {
-        $image = Image::all();
+        $images = Image::all();
 
-        return view('admin.image.index')->with('Image', $image);
+        return view('admin.image.index')->with('images', $images);
     }
 
     public function create()
@@ -25,11 +28,23 @@ class ImageController extends Controller {
         return view('admin.image.create');
     }
 
-    public function store(SocialLinkRequest $request)
+    public function store(CreateImageRequest $request)
     {
-        Image::create($request->all());
+        $image = new Image;
 
-        return redirect()->route('admin.image.index');
+        $image->name = $request->get('name');
+        $image->artist = $request->get('artist');
+        $image->credit = $request->get('credit');
+
+        if($request->file('image')->isValid())
+        {
+            $image->url = $this->manage_upload($request->file('image'));
+            $image->save();
+
+            return redirect()->route('admin.image.index');
+        }
+
+        return view('admin.image.create')->withErrors(['image' => 'The uploaded file is not valid']);
     }
 
     public function edit($id)
@@ -39,7 +54,7 @@ class ImageController extends Controller {
         return view('admin.image.edit')->with('image', $image);
     }
 
-    public function update($id, SocialLinkRequest $request)
+    public function update($id, EditImageRequest $request)
     {
         $image = Image::findOrFail($id);
 
@@ -61,7 +76,7 @@ class ImageController extends Controller {
     {
         $image = Image::findOrFail($id);
 
-        return view('admin.character.image')->with('imagedata', $image);
+        return view('admin.image.image')->with('image', $image);
     }
 
     public function upload($id, ImageUploadRequest $request)
@@ -70,14 +85,7 @@ class ImageController extends Controller {
 
         if($request->file('image')->isValid())
         {
-            $destinationPath = '/uploads/gallery'; // upload path
-            $extension = $request->file('image')->getClientOriginalExtension(); // getting image extension
-            $fileName = $image_data->slug.'.'.$extension;
-            $request->file('image')->move(base_path() . '/public'.$destinationPath, $fileName); // uploading file to given path
-            // sending back with message
-            //Session::flash('success', 'Upload successfully');
-
-            $image_data->image = $destinationPath.'/'.$fileName;
+            $image_data->url = $this->manage_upload($request->file('image'));
             $image_data->save();
 
             return redirect()->route('admin.image.index');
@@ -87,6 +95,15 @@ class ImageController extends Controller {
             return view('admin.image.image')->with('imagedata', $image_data)->withErrors(['image' => 'The uploaded file is not valid']);
         }
 
+    }
+
+    private function manage_upload($file)
+    {
+        $destinationPath = '/uploads/gallery'; // upload path
+        $fileName = $file->getClientOriginalName();
+        $file->move(base_path() . '/public'.$destinationPath, $fileName); // uploading file to given path
+
+        return $destinationPath.'/'.$fileName;
     }
 
 }
