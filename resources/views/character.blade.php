@@ -5,7 +5,35 @@
 @endsection
 
 @section('content')
-    <h1>Character {{ $character->name }}</h1>
+    <div id="#details">
+        <div>
+            <img src="{{ $character->image }}">
 
-    <p>{!! Markdown::transform($character->description) !!}</p>
+            <h1>Character {{ $character->name }}</h1>
+        </div>
+
+        <div id="#description">
+            {!! Markdown::transform($character->description) !!}
+        </div>
+    </div>
+    <div id="#gallery">
+        @if($character->images->count())
+            <h2>Gallery</h2>
+            <ul>
+                @foreach($character->images as $image)
+                    <li>
+                        <div>
+                            <img src="{{ $image->url }}">
+                            <h3>{{ $image->name }}</h3>
+                            Credit: <a href="{{ $image->credit }}">{{ $image->artist }}</a>
+                        </div>
+                    </li>
+                @endforeach
+            </ul>
+        @else
+
+        @endif
+    </div>
+
+
 @endsection

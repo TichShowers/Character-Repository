@@ -17,6 +17,8 @@
 </head>
 <body>
 <div class="container">
+    @include('shared._nav')
+
     @yield('content')
 </div>
 
