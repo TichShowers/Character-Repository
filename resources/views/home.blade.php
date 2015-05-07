@@ -13,7 +13,7 @@
                 <div>
                     <h2>{{ $category->name }}</h2>
 
-                    @foreach($category->characters as $character)
+                    @foreach($category->characters()->weighted()->get() as $character)
                         <div>
                             <a href="{{ route('Character', ['category' => $category->slug, 'character' => $character->slug]) }}"><img src="{{ $character->image }}"></a>
                             <a href="{{ route('Character', ['category' => $category->slug, 'character' => $character->slug]) }}">{{ $character->name }}</a>

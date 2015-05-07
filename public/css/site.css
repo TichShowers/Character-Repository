@@ -42,6 +42,7 @@ nav > ul > li {
 nav a{
     font-size: 30px;
     padding: 10px 50px;
+    width: 300px;
 }
 
 nav a:hover, nav a:focus {
@@ -50,11 +51,11 @@ nav a:hover, nav a:focus {
 }
 
 .container {
-    width: 1000px;
+    width: 1280px;
     margin: 0 auto;
-    background: rgba(0,0,0, 0.2);
-    border-right: 1px solid white;
-    border-left: 1px solid white;
+    /*background: rgba(0,0,0, 0.2);
+    /*border-right: 10px solid rgba(0,0,255, 0.3);
+    border-left: 10px solid rgba(0,0,255, 0.3);*/
 }
 
 #category h2 {
@@ -72,7 +73,6 @@ nav a:hover, nav a:focus {
     display: flex;
     padding: 10px 30px;
     align-items: center
-
 }
 
 #category > div > div > a{
@@ -114,14 +114,15 @@ nav a:hover, nav a:focus {
 
 #description {
     display: block;
-    border: 1px solid rgba(255,255,255,0.3);
-    border-radius: 25px;
-    background: rgb(200,200,200);
-    padding: 10px;
+    /*border-top: 1px solid rgba(255,255,255,0.7);
+    border-bottom: 1px solid rgba(255,255,255,0.7);*/
+    background: rgba(255,255,255, 0.3);
+
+    padding: 15px;
     margin: 15px;
-    -webkit-box-shadow: 0px 0px 19px 0px rgba(50, 50, 50, 1);
-    -moz-box-shadow:    0px 0px 19px 0px rgba(50, 50, 50, 1);
-    box-shadow:         0px 0px 19px 0px rgba(50, 50, 50, 1);
+    -webkit-box-shadow: 2px 2px 8px 0px rgba(50, 50, 50, 1);
+    -moz-box-shadow:    2px 2px 8px 0px rgba(50, 50, 50, 1);
+    box-shadow:         2px 2px 8px 0px rgba(50, 50, 50, 1);
 }
 
 #identity h1 {
@@ -137,21 +138,35 @@ nav a:hover, nav a:focus {
 #gallery ul {
     padding-start: 0px;
     list-style: none;
+    padding: 0;
     display: table;
     margin: 0 auto;
-    margin: 0;
-    padding: 0;
 }
 
 #gallery li {
     width: 33%;
     display: inline-block;
-    padding: 0;
+    margin: 10px 0;
+}
+
+#gallery li > div {
     text-align: center;
 }
 
 #gallery img {
-    width: 95%;
+    background: white;
+    display: block;
+    max-height: 300px;
+    max-width: 410px;
+    height: auto;
+    width: auto;
+}
+
+
+.fancybox{
+    padding: 2px;
+    border: 1px solid lightgrey;
+    display: inline-block;
 }
 
 #gallery p{

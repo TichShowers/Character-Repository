@@ -43,5 +43,4 @@
             $(".fancybox").fancybox();
         });
     </script>
-
 @endsection

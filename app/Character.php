@@ -22,4 +22,9 @@ class Character extends Model {
         return $this->belongsToMany('App\Image');
     }
 
+    public function scopeWeighted($query)
+    {
+        $query->orderBy('weight', 'ASC');
+    }
+
 }
