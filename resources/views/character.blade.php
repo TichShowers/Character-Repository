@@ -5,27 +5,26 @@
 @endsection
 
 @section('content')
-    <div id="#details">
-        <div>
+    <div id="details">
+        <div id="identity">
             <img src="{{ $character->image }}">
 
-            <h1>Character {{ $character->name }}</h1>
+            <h1>{{ $character->name }}</h1>
         </div>
 
-        <div id="#description">
+        <div id="description">
             {!! Markdown::transform($character->description) !!}
         </div>
     </div>
-    <div id="#gallery">
+    <div id="gallery">
         @if($character->images->count())
-            <h2>Gallery</h2>
             <ul>
                 @foreach($character->images as $image)
                     <li>
                         <div>
-                            <img src="{{ $image->url }}">
-                            <h3>{{ $image->name }}</h3>
-                            Credit: <a href="{{ $image->credit }}">{{ $image->artist }}</a>
+                            <a class="fancybox" rel="group" href="{{ $image->url }}"><img src="{{ $image->url }}"></a>
+                            <p>{{ $image->name }}</p>
+                            <p>Credit: <a href="{{ $image->credit }}">{{ $image->artist }}</a></p>
                         </div>
                     </li>
                 @endforeach
@@ -35,5 +34,14 @@
         @endif
     </div>
 
+
+@endsection
+
+@section('scripts')
+    <script type="text/javascript">
+        $(document).ready(function() {
+            $(".fancybox").fancybox();
+        });
+    </script>
 
 @endsection

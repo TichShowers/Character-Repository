@@ -5,22 +5,21 @@
 @endsection
 
 @section('content')
-
-    <h1>Home</h1>
-
     @if(!$categories->count())
-        <p>There are no categories.</p>
+        <p>The webmaster has not yet added any content</p>
     @else
-        <div>
+        <div id="category">
             @foreach($categories as $category)
-                <h2>{{ $category->name }}</h2>
+                <div>
+                    <h2>{{ $category->name }}</h2>
 
-                @foreach($category->characters as $character)
-                    <div>
-                        <h3><a href="{{ route('Character', ['category' => $category->slug, 'character' => $character->slug]) }}">{{ $character->name }}</a></h3>
-                        <img src="{{ $character->image }}">
-                    </div>
-                @endforeach
+                    @foreach($category->characters as $character)
+                        <div>
+                            <a href="{{ route('Character', ['category' => $category->slug, 'character' => $character->slug]) }}"><img src="{{ $character->image }}"></a>
+                            <a href="{{ route('Character', ['category' => $category->slug, 'character' => $character->slug]) }}">{{ $character->name }}</a>
+                        </div>
+                    @endforeach
+                </div>
             @endforeach
         </div>
     @endif

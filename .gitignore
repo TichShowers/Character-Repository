@@ -4,3 +4,5 @@
 .env
 
 /public/uploads/*
+
+/public/img/banner.png
